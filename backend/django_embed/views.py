@@ -52,6 +52,7 @@ def profile(request):
             return redirect('profile')
     else:
         form = UserChangeForm(instance=request.user)
+        
     return render(request, 'profile.html', {'form': form})
 
 

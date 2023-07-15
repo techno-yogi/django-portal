@@ -20,7 +20,7 @@ class Job(models.Model):
         ('completed', 'Completed'),
         ('failed', 'Failed'),
     ]
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     job_id = models.AutoField(primary_key=True)
     job_type = models.CharField(max_length=100)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
@@ -36,7 +36,7 @@ class Job(models.Model):
         app_label = 'django_embed'
 
 class Task(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     job = models.ForeignKey(Job, on_delete=models.CASCADE, related_name='tasks')
     task_id = models.AutoField(primary_key=True)
     status = models.CharField(max_length=20, choices=Job.STATUS_CHOICES, default='pending')

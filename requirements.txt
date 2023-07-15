@@ -1,5 +1,6 @@
 bokeh
-bokeh-django
 django
+bokeh-django
+pytest-django
 pytest
 pandas
