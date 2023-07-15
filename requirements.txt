@@ -1,3 +1,5 @@
 bokeh
 bokeh-django
 django
+pytest
+pandas
