@@ -1,0 +1,14 @@
+{% extends 'base_generic.html' %}
+{% load static %}
+
+{% block content %}
+  <h2>Logs</h2>
+  {% for log in logs %}
+    <div class="log">
+      <h3>{{ log.timestamp }}</h3>
+      <pre>{{ log.output }}</pre>
+    </div>
+  {% empty %}
+    <p>No logs found.</p>
+  {% endfor %}
+{% endblock %}

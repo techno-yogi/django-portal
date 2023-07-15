@@ -1,0 +1,10 @@
+{% extends 'base_generic.html' %} 
+{% load static %}
+
+{% block content %}
+<body>
+  <div>
+    This Bokeh app below is served by a Django server (via autoload.js):
+  </div>
+  {{ script|safe }}
+{% endblock %}
