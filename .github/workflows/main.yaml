@@ -19,4 +19,4 @@ jobs:
         pip install -r requirements.txt
     - name: Test with pytest-django
       run: |
-        python /backend/manage.py test
+        python backend/manage.py test
