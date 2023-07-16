@@ -4,3 +4,6 @@ bokeh-django
 pytest-django
 pytest
 pandas
+django-cors-headers
+corsheaders
+```
