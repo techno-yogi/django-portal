@@ -6,4 +6,3 @@ pytest
 pandas
 django-cors-headers
 corsheaders
-```
