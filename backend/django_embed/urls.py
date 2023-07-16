@@ -47,7 +47,7 @@ apps_path = base_path / "bokeh_apps"
 bokeh_apps = [
     *directory(apps_path),
     document("sea_surface_direct", views.sea_surface_handler),
-    document("sea_surface_with_template", views.sea_surface_handler_with_template),
+    document("job_visualizer_with_template", views.job_visualizer_with_template),
     document("sea_surface_bokeh", apps_path / "sea_surface.py"),
     autoload("temp", views.sea_surface_handler),
     autoload("sea_surface_custom_uri", views.sea_surface_handler),

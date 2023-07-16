@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'channels',
+    'corsheaders',
     'bokeh_django',
     'django_embed'
 ]
@@ -49,6 +50,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -137,6 +139,8 @@ STATICFILES_FINDERS = (
 )
 
 THEMES_DIR = MODULE_DIR / "themes"
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 bokeh_settings.resources = 'server'
 
