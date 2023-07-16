@@ -1,7 +1,9 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
-
+from django.http import JsonResponse
+from django.views import View
+from .services import HostQueryService
 
 User = get_user_model()
 
@@ -16,14 +18,29 @@ class Log(models.Model):
 class Host(models.Model):
     name = models.CharField(max_length=255)
     ip_address = models.GenericIPAddressField()
+    cores = models.IntegerField(null=True)
+    memory = models.IntegerField(null=True)
 
     def __str__(self):
         return self.name
     
+    # def save(self, *args, **kwargs):
+    #     service = HostQueryService()
+    #     info = service.get_host_info(self.ip_address)
+    #     if info is None:
+    #         raise Exception('Could not connect to host')
+        
+    #     self.cores = info['cores']
+    #     self.memory = info['memory']
+    #     # ... other fields ...
+    #     super().save(*args, **kwargs)
+
     # add any other fields as needed
     class Meta:
         app_label = 'django_embed'
 
+
+    
 class Environment(models.Model):
     name = models.CharField(max_length=255)
     host = models.ForeignKey(Host, on_delete=models.CASCADE)
