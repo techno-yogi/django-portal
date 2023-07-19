@@ -21,12 +21,17 @@ from django.contrib.auth import views as auth_views
 
 from bokeh_django import autoload, directory, document, static_extensions
 
+from tasks.views import get_status, home, run_task
+
 from . import views
 
 
 urlpatterns = [
     path(r"", views.index, name="index"),
     path("admin/", admin.site.urls),
+    path("tasks/<task_id>/", get_status, name="get_status"),
+    path("tasks/", run_task, name="run_task"),
+    path("logs/<int:job_id>/", views.stream_logs, name="stream_logs"),
     path("sea-surface-temp", views.sea_surface),
     path("my-sea-surface", views.sea_surface_custom_uri),
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),

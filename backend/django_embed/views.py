@@ -31,6 +31,42 @@ from bokeh_apps import job_visualizer
 
 import subprocess
     
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponse
+
+from tasks.sample_tasks import create_task
+
+
+def home(request):
+    return render(request, "home.html")
+
+
+@csrf_exempt
+def run_task(request):
+    if request.POST:
+        task_type = request.POST.get("type")
+        task = create_task.delay(int(task_type))
+        return JsonResponse({"task_id": task.id}, status=202)
+
+
+@csrf_exempt
+def get_status(request, task_id):
+    task_result = AsyncResult(task_id)
+    result = {
+        "task_id": task_id,
+        "task_status": task_result.status,
+        "task_result": task_result.result
+    }
+    return JsonResponse(result, status=200)
+
+@login_required
+def stream_logs(request, job_id):
+    job = get_object_or_404(Job, job_id=job_id)
+    if request.user != job.user:
+        return HttpResponse(status=403)
+    with open(job.log_file, 'r') as log_file:
+        return HttpResponse(log_file.read())
+
 @login_required
 def run_subprocess(request):
     command = ['python', '--version']
@@ -148,6 +184,7 @@ def job_visualizer_handler(doc, request):
 
     doc.add_root(layout)
 
+    @without_document_lock
     @gen.coroutine
     async def update():
         #Query the database for the time of the last job submission
@@ -226,3 +263,4 @@ def sea_surface(request: HttpRequest) -> HttpResponse:
 def sea_surface_custom_uri(request: HttpRequest) -> HttpResponse:
     script = server_document(request._current_scheme_host + "/sea_surface_custom_uri")
     return render(request, "embed.html", dict(script=script))
+

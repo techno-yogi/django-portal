@@ -14,3 +14,4 @@ class HostModelTest(TestCase):
         host = Host(ip_address='http://127.0.0.1')
         host.save()
         self.assertIsNotNone(host.ip_address)
+        

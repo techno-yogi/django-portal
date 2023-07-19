@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+
+import os
 from pathlib import Path
 
 from bokeh.settings import bokehjsdir, settings as bokeh_settings
@@ -28,10 +30,9 @@ SECRET_KEY = 'django-insecure-kj&3ri0=k%3@w4j@cb$+4do0*^pv_qwafq(4@-9f24x!qhys^w
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1"]
 
-
-# Application definition
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -43,14 +44,14 @@ INSTALLED_APPS = [
     'channels',
     'corsheaders',
     'bokeh_django',
-    'django_embed'
+    'django_embed', 
+    'tasks'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -75,18 +76,31 @@ TEMPLATES = [
     },
 ]
 
+# WSGI_APPLICATION = 'django_embed.wsgi.application'
 ASGI_APPLICATION = 'django_embed.asgi.application'
 
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'django-portal',
+        'USER': 'postgres',
+        'PASSWORD': 'postgresadmin',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
+
 
 
 # Password validation
@@ -141,6 +155,11 @@ STATICFILES_FINDERS = (
 THEMES_DIR = MODULE_DIR / "themes"
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+# Application definition
+#CELERY_BROKER_URL = 'amqp://testuser:test12345@localhost:5672//' # RabbitMQ
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "amqp://testuser:test12345@localhost:5672//")
+CELERY_RESULT_BACKEND = os.environ.get("CELERY_BROKER", "amqp://testuser:test12345@localhost:5672//")
 
 bokeh_settings.resources = 'server'
 

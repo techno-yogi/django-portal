@@ -87,9 +87,10 @@ class Job(models.Model):
     output_dir = models.CharField(max_length=255, null=True, blank=True)
     output = models.TextField(null=True, blank=True)
     system_config = models.TextField(null=True, blank=True)
+    log_file = models.FilePathField(path="/path/to/logs", null=True)
 
     def __str__(self):
-        return f"Job {self.job_id}: {self.job_type}"
+        return f"Job {self.job_id}: {self.job_type}: {self.user.get_username()}"
 
     class Meta:
         app_label = 'django_embed'

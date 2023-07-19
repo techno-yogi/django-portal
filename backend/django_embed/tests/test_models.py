@@ -21,8 +21,8 @@ class TestModels(TestCase):
         self.assertEqual(self.job.tasks.first(), self.task)
 
     def test_str(self):
-        self.assertEqual(str(self.job), f"Job {self.job.job_id}: {self.job.job_type}")
-        self.assertEqual(str(self.task), f"Task {self.task.task_id} of Job {self.job.job_id}: {self.job.job_type} from User: {self.user}")
+        self.assertEqual(str(self.job), f"Job {self.job.job_id}: {self.job.job_type}: {self.job.user.get_username()}")
+        self.assertEqual(str(self.task), f"Task {self.task.task_id} of Job {self.job.job_id}: {self.job.job_type} from User: {self.user.get_username()}")
 
     def test_status_choices(self):
         for status in ('pending', 'running', 'completed', 'failed'):
@@ -39,16 +39,16 @@ class TestModels(TestCase):
             self.task.save()
 
     def test_name_label(self):
-        host = Host.objects.get(id=1)
+        host = Host.objects.get(id=0)
         field_label = host._meta.get_field('name').verbose_name
         self.assertEqual(field_label, 'name')
 
     def test_name_max_length(self):
-        host = Host.objects.get(id=1)
+        host = Host.objects.get(id=0)
         max_length = host._meta.get_field('name').max_length
         self.assertEqual(max_length, 255)
 
     def test_object_name_is_name(self):
-        host = Host.objects.get(id=1)
+        host = Host.objects.get(id=0)
         expected_object_name = host.name
         self.assertEqual(str(host), expected_object_name)
